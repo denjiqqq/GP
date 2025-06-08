@@ -1,0 +1,272 @@
+{
+  "name": "Pinala Telegram Bot",
+  "nodes": [
+    {
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "credentials": {"telegramApi": "PinalaBot"},
+      "notes": "Trigger when user sends a message"
+    },
+    {
+      "name": "Find or Create User",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [250, 0],
+      "notes": "Upsert user profile in Postgres"
+    },
+    {
+      "name": "Get User Memory",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [500, 0],
+      "notes": "Load past interactions, tasks, and stats"
+    },
+    {
+      "name": "Parse Command",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [750, 0],
+      "notes": "Determine if input is a command or chat message"
+    },
+    {
+      "name": "Switch Command",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [1000, 0],
+      "notes": "Route based on command"
+    },
+    {
+      "name": "Add Task",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [1250, -200],
+      "notes": "Insert task into database"
+    },
+    {
+      "name": "Edit Task",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [1250, -100],
+      "notes": "Update task in database"
+    },
+    {
+      "name": "Delete Task",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [1250, 0],
+      "notes": "Remove task from database"
+    },
+    {
+      "name": "Complete Task",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [1250, 100],
+      "notes": "Mark task as completed and schedule removal"
+    },
+    {
+      "name": "List Tasks",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [1250, 200],
+      "notes": "Return open tasks"
+    },
+    {
+      "name": "Stats",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [1250, 300],
+      "notes": "Return productivity statistics"
+    },
+    {
+      "name": "Send Meme",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [1250, 400],
+      "notes": "Fetch meme URL"
+    },
+    {
+      "name": "Check Rate Limit",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1250, 500],
+      "notes": "Prevent excessive OpenAI use"
+    },
+    {
+      "name": "Prepare Prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1500, 500],
+      "notes": "Combine memory and user message"
+    },
+    {
+      "name": "OpenAI Chat",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [1750, 500],
+      "notes": "ChatCompletion with personality"
+    },
+    {
+      "name": "Save Memory",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [2000, 500],
+      "notes": "Store interaction and update stats"
+    },
+    {
+      "name": "Send Telegram Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [2250, 500],
+      "notes": "Send message back to user"
+    },
+    {
+      "name": "Cron Reminders",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [0, 500],
+      "notes": "Scheduled reminder checks"
+    },
+    {
+      "name": "Select Due Tasks",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [250, 500],
+      "notes": "Get tasks nearing deadlines"
+    },
+    {
+      "name": "Compute Reminder Severity",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [500, 500],
+      "notes": "Choose friendly or urgent message"
+    },
+    {
+      "name": "Send Reminder",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [750, 500],
+      "notes": "Notify user of upcoming deadline"
+    },
+    {
+      "name": "Cron Recurring",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [0, 700],
+      "notes": "Create tasks that repeat"
+    },
+    {
+      "name": "Create Recurring Tasks",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [250, 700],
+      "notes": "Insert new occurrences"
+    },
+    {
+      "name": "Cron Meme",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [0, 900],
+      "notes": "Periodic meme sending"
+    },
+    {
+      "name": "Select Meme",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [250, 900],
+      "notes": "Fetch meme from API"
+    },
+    {
+      "name": "Broadcast Meme",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [500, 900],
+      "notes": "Get chat IDs for meme broadcast"
+    },
+    {
+      "name": "Send Meme Broadcast",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [750, 900],
+      "notes": "Send meme to all users"
+    },
+    {
+      "name": "Cron Ads",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [0, 1100],
+      "notes": "Hidden admin command for promotional messages"
+    },
+    {
+      "name": "Get Users",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 1,
+      "position": [250, 1100],
+      "notes": "Retrieve all subscribers"
+    },
+    {
+      "name": "Send Promotion",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [500, 1100],
+      "notes": "Send advertising message"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [[{"node": "Find or Create User", "type": "main", "index": 0}]]
+    },
+    "Find or Create User": {
+      "main": [[{"node": "Get User Memory", "type": "main", "index": 0}]]
+    },
+    "Get User Memory": {
+      "main": [[{"node": "Parse Command", "type": "main", "index": 0}]]
+    },
+    "Parse Command": {
+      "main": [[{"node": "Switch Command", "type": "main", "index": 0}]]
+    },
+    "Switch Command": {
+      "main": [
+        [{"node": "Add Task", "type": "main", "index": 0}],
+        [{"node": "Edit Task", "type": "main", "index": 0}],
+        [{"node": "Delete Task", "type": "main", "index": 0}],
+        [{"node": "Complete Task", "type": "main", "index": 0}],
+        [{"node": "List Tasks", "type": "main", "index": 0}],
+        [{"node": "Stats", "type": "main", "index": 0}],
+        [{"node": "Send Meme", "type": "main", "index": 0}],
+        [{"node": "Check Rate Limit", "type": "main", "index": 0}]
+      ]
+    },
+    "Add Task": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "Edit Task": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "Delete Task": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "Complete Task": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "List Tasks": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "Stats": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "Send Meme": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+    "Check Rate Limit": {"main": [[{"node": "Prepare Prompt", "type": "main", "index": 0}]]},
+    "Prepare Prompt": {"main": [[{"node": "OpenAI Chat", "type": "main", "index": 0}]]},
+    "OpenAI Chat": {"main": [[{"node": "Save Memory", "type": "main", "index": 0}]]},
+    "Save Memory": {"main": [[{"node": "Send Telegram Reply", "type": "main", "index": 0}]]},
+
+    "Cron Reminders": {
+      "main": [[{"node": "Select Due Tasks", "type": "main", "index": 0}]]
+    },
+    "Select Due Tasks": {
+      "main": [[{"node": "Compute Reminder Severity", "type": "main", "index": 0}]]
+    },
+    "Compute Reminder Severity": {
+      "main": [[{"node": "Send Reminder", "type": "main", "index": 0}]]
+    },
+
+    "Cron Recurring": {"main": [[{"node": "Create Recurring Tasks", "type": "main", "index": 0}]]},
+
+    "Cron Meme": {"main": [[{"node": "Select Meme", "type": "main", "index": 0}]]},
+    "Select Meme": {"main": [[{"node": "Broadcast Meme", "type": "main", "index": 0}]]},
+    "Broadcast Meme": {"main": [[{"node": "Send Meme Broadcast", "type": "main", "index": 0}]]},
+
+    "Cron Ads": {"main": [[{"node": "Get Users", "type": "main", "index": 0}]]},
+    "Get Users": {"main": [[{"node": "Send Promotion", "type": "main", "index": 0}]]}
+  }
+}
